@@ -129,7 +129,7 @@ void setup()
     sensor.setupBNO080(false, I2CSCAN::pickDevice(BNO_ADDR_1, BNO_ADDR_2, true), PIN_IMU_INT);
     #endif
 #endif
-
+    processBlinking();
     sensor.motionSetup(&config);
 #ifdef HAS_SECOND_IMU
     if(secondImuActive)
@@ -147,7 +147,8 @@ void loop()
 {
     serialCommandsUpdate();
     wifiUpkeep();
-    otaUpdate();
+    // sascha OTA not used now
+    //otaUpdate();
     clientUpdate(&sensor, &sensor2);
     if (isCalibrating)
     {

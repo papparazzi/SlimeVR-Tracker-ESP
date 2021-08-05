@@ -23,10 +23,11 @@
 #include "consts.h"
 
 // Set parameters of IMU and board used
-#define IMU IMU_BNO085
-#define BOARD BOARD_SLIMEVR
-#define SECOND_IMU true
-#define IMU_ROTATION PI / 2.0
+#define IMU IMU_MPU9250
+//#define IMU IMU_MPU6500
+#define BOARD BOARD_CUSTOM
+#define SECOND_IMU false
+#define IMU_ROTATION 0 //PI / 2.0
 
 #if IMU == IMU_BNO085
   #define IMU_NAME "BNO085"
@@ -34,33 +35,33 @@
   #define IMU_HAS_GYRO true
   #define IMU_HAS_MAG true
   #define BNO_HAS_ARVR_STABILIZATION true
-  #define I2C_SPEED 400000
+  #define I2C_SPEED SECOND_IMU ? 400000 : 100000
 #elif IMU == IMU_BNO080
   #define IMU_NAME "BNO080"
   #define IMU_HAS_ACCELL true
   #define IMU_HAS_GYRO true
   #define IMU_HAS_MAG true
   #define BNO_HAS_ARVR_STABILIZATION false
-  #define I2C_SPEED 400000
+  #define I2C_SPEED SECOND_IMU ? 400000 : 100000
 #elif IMU == IMU_BNO055
   #define IMU_NAME "BNO055"
   #define IMU_HAS_ACCELL true
   #define IMU_HAS_GYRO true
   #define IMU_HAS_MAG true
   #define BNO_HAS_ARVR_STABILIZATION false
-  #define I2C_SPEED 400000
+  #define I2C_SPEED SECOND_IMU ? 400000 : 100000
 #elif IMU == IMU_MPU9250
   #define IMU_NAME "MPU9250"
   #define IMU_HAS_ACCELL true
   #define IMU_HAS_GYRO true
   #define IMU_HAS_MAG true
-  #define I2C_SPEED 100000
+  #define I2C_SPEED 600000
 #elif IMU == IMU_MPU6500
   #define IMU_NAME "MPU6500"
   #define IMU_HAS_ACCELL true
   #define IMU_HAS_GYRO true
   #define IMU_HAS_MAG false
-  #define I2C_SPEED 100000
+  #define I2C_SPEED 400000
 #else
     #error Select IMU in defines.h
 #endif
@@ -86,6 +87,12 @@
   #define BNO_ADDR_2 0x4B
 #elif BOARD == BOARD_CUSTOM
   // Define pins by the examples above
+  #define PIN_IMU_SDA 21
+  #define PIN_IMU_SCL 22
+  #define PIN_IMU_INT 25
+  #define BNO_ADDR_1 0x4A
+  #define BNO_ADDR_2 0x4B
+  #define LED_BUILTIN 19
 #elif BOARD == BOARD_WROOM32
   #define PIN_IMU_SDA 12
   #define PIN_IMU_SCL 13
@@ -107,7 +114,7 @@
 #define SEND_UPDATES_UNCONNECTED 1
 
 // Determines how often we sample and send data
-#define samplingRateInMillis 10
+#define samplingRateInMillis 1
 #define batterySampleRate 10000
 
 // Setup for the Magnetometer

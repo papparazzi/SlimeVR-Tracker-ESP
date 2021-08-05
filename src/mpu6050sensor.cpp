@@ -21,7 +21,7 @@
     THE SOFTWARE.
 */
 
-#include "MPU9250.h"
+//#include "MPU9250.h"
 #include "sensor.h"
 #include "udpclient.h"
 #include <i2cscan.h>
@@ -42,6 +42,7 @@ bool hasNewData = false;
 void gatherCalibrationData(MPU9250 &imu);
 
 void MPU6050Sensor::motionSetup(DeviceConfig * config) {
+    /*
     uint8_t addr = 0x68;
     if(!I2CSCAN::isI2CExist(addr)) {
         addr = 0x69;
@@ -54,24 +55,43 @@ void MPU6050Sensor::motionSetup(DeviceConfig * config) {
     }
     // initialize device
     imu.initialize(addr);
+/////
+   
+        // Do a quick and dirty calibration. As the imu warms up the offsets will change a bit, but this will be good-enough
+        Serial.println("Put down the device and wait for baseline gyro reading calibration");
+        delay(2000);
+        digitalWrite(LOADING_LED, HIGH);
+        imu.CalibrateAccel(6);
+        imu.CalibrateGyro(6);
+        imu.PrintActiveOffsets();
+        digitalWrite(LOADING_LED, LOW);
+
+///
+
+
     if(!imu.testConnection()) {
         Serial.print("Can't communicate with MPU9250, response ");
         Serial.println(imu.getDeviceID(), HEX);
     }
     devStatus = imu.dmpInitialize();
+    // sascha - disable as calibration not working
 
-    imu.setXGyroOffset(config->calibration.G_off[0]);
-    imu.setYGyroOffset(config->calibration.G_off[1]);
-    imu.setZGyroOffset(config->calibration.G_off[2]);
-    imu.setXAccelOffset(config->calibration.A_B[0]);
-    imu.setYAccelOffset(config->calibration.A_B[1]);
-    imu.setZAccelOffset(config->calibration.A_B[2]);
+    //imu.setXGyroOffset(config->calibration.G_off[0]);
+    //imu.setYGyroOffset(config->calibration.G_off[1]);
+    //imu.setZGyroOffset(config->calibration.G_off[2]);
+    //imu.setXAccelOffset(config->calibration.A_B[0]);
+    //imu.setYAccelOffset(config->calibration.A_B[1]);
+    //imu.setZAccelOffset(config->calibration.A_B[2]);
 
     // make sure it worked (returns 0 if so)
     if (devStatus == 0) {
-        // turn on the DMP, now that it's ready
+        
+     
+
+// turn on the DMP, now that it's ready
         Serial.println(F("Enabling DMP..."));
         imu.setDMPEnabled(true);
+
         mpuIntStatus = imu.getIntStatus();
 
         // set our DMP Ready flag so the main loop() function knows it's okay to use it
@@ -89,9 +109,11 @@ void MPU6050Sensor::motionSetup(DeviceConfig * config) {
         Serial.print(devStatus);
         Serial.println(F(")"));
     }
+*/    
 }
 
 void MPU6050Sensor::motionLoop() {
+  /*
     // if programming failed, don't try to do anything
     if (!dmpReady) return;
     mpuIntStatus = imu.getIntStatus();
@@ -126,6 +148,7 @@ void MPU6050Sensor::motionLoop() {
         quaternion *= sensorOffset;
         hasNewData = true;
     }
+    */
 }
 
 void MPU6050Sensor::sendData() {
@@ -144,6 +167,7 @@ void MPU6050Sensor::startCalibration(int calibrationType) {
 }
 
 void gatherCalibrationData(MPU9250 &imu) {
+    /*
     Serial.println("Gathering raw data for device calibration...");
     int calibrationSamples = 500;
     // Reset values
@@ -197,4 +221,5 @@ void gatherCalibrationData(MPU9250 &imu) {
         delay(50);
     }
     Serial.println("Calibration data gathered and sent");
+*/
 }

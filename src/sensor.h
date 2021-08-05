@@ -111,7 +111,7 @@ class MPU6050Sensor : public MPUSensor {
         void sendData() override final;
         void startCalibration(int calibrationType) override final;
     private:
-        Quaternion rawQuat {};
+        //Quaternion rawQuat {};
         // MPU dmp control/status vars
         bool dmpReady{false};  // set true if DMP init was successful
         uint8_t mpuIntStatus;   // holds actual interrupt status byte from MPU
@@ -141,6 +141,7 @@ class MPU9250Sensor : public MPUSensor {
         float Gxyz[3] {};
         float Mxyz[3] {};
         float rawMag[3] {};
+        bool newData {false};
         // Loop timing globals
         unsigned long now = 0, last = 0;   //micros() timers
         float deltat = 0;                  //loop time in seconds
